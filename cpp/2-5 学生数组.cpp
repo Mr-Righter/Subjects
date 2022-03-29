@@ -1,52 +1,52 @@
-//#include <iostream>
-//#include <cstring>
-//#pragma warning(disable : 4996)
-//using namespace std;
-//class student
-//{
-//private:
-//	char* name;
-//	float g1, g2;
-//public:
-//	student(const char* str, int x, int y)           
-//	{
-//		name = new char[strlen(str) + 1]{ '\0' };    //´ÓÈ«¾ÖÇø½«Ñ§ÉúµÄÃû×Ö¿½±´Ò»·İ·ÅÔÚ¶ÑÇøµÄÄÚ´æÉÏ,+1ÎªÁË´æ·Å'\0'
-//		strcpy(name, str);
-//		cout << "construct" << " " << name << endl;
-//		g1 = x;
-//		g2 = y;
-//	}
-//	~student()
-//	{
-//		cout << "destruct" << " " << name << endl;
-//		delete[]name;
-//	}
-//	student(const student& a)    
-//	{
-//		name = new char[strlen(a.name) + 2]{'\0'};       //·ÖÅäÄÚ´æµÄÍ¬Ê±½«×Ö·ûÊı×é³õÊ¼»¯Îª'\0',·ñÔò¿ÉÄÜ»áµ¼ÖÂÔ½½ç
-//		strcpy(name, a.name);
-//		strcat(name, "u");
-//		g1 = a.g1 - 10.0;
-//		g2 = a.g2 - 10.0;
-//		cout << "copy" << " " << name << endl;
-//	}
-//	int getG1() { return g1; }
-//	int getG2() { return g2; }
-//	student* getAdress() { return this; }     //·µ»ØÀà¶ÔÏóµÄµØÖ·£¬º¯ÊıÀàĞÍÊÇ student *
-//};
-//
-//int main()
-//{
-//	student a("li", 90.0, 80.0);
-//	{
-//		student st[2] = { student("zhang",80.0,70.0),student("wang",90.0,80.0) };   //¶¨Òåstudent¾Ö²¿Êı×é
-//		for (int i = 0; i < 2; i++)
-//		{
-//			cout << (st[i].getG1() + st[i].getG2()) / 2 << " ";
-//		}
-//		cout << endl;
-//	}
-//	student b(a);
-//	cout << &b - b.getAdress() << endl;
-//	return 0;
-//}
+#include <iostream>
+#include <cstring>
+#pragma warning(disable : 4996)
+using namespace std;
+class student
+{
+private:
+	char* name;
+	float g1, g2;
+public:
+	student(const char* str, int x, int y)           
+	{
+		name = new char[strlen(str) + 1]{ '\0' };    //ä»å…¨å±€åŒºå°†å­¦ç”Ÿçš„åå­—æ‹·è´ä¸€ä»½æ”¾åœ¨å †åŒºçš„å†…å­˜ä¸Š,+1ä¸ºäº†å­˜æ”¾'\0'
+		strcpy(name, str);
+		cout << "construct" << " " << name << endl;
+		g1 = x;
+		g2 = y;
+	}
+	~student()
+	{
+		cout << "destruct" << " " << name << endl;
+		delete[]name;
+	}
+	student(const student& a)    
+	{
+		name = new char[strlen(a.name) + 2]{'\0'};       //åˆ†é…å†…å­˜çš„åŒæ—¶å°†å­—ç¬¦æ•°ç»„åˆå§‹åŒ–ä¸º'\0',å¦åˆ™å¯èƒ½ä¼šå¯¼è‡´è¶Šç•Œ
+		strcpy(name, a.name);
+		strcat(name, "u");
+		g1 = a.g1 - 10.0;
+		g2 = a.g2 - 10.0;
+		cout << "copy" << " " << name << endl;
+	}
+	int getG1() { return g1; }
+	int getG2() { return g2; }
+	student* getAdress() { return this; }     //è¿”å›ç±»å¯¹è±¡çš„åœ°å€ï¼Œå‡½æ•°ç±»å‹æ˜¯ student *
+};
+
+int main()
+{
+	student a("li", 90.0, 80.0);
+	{
+		student st[2] = { student("zhang",80.0,70.0),student("wang",90.0,80.0) };   //å®šä¹‰studentå±€éƒ¨æ•°ç»„
+		for (int i = 0; i < 2; i++)
+		{
+			cout << (st[i].getG1() + st[i].getG2()) / 2 << " ";
+		}
+		cout << endl;
+	}
+	student b(a);
+	cout << &b - b.getAdress() << endl;
+	return 0;
+}
