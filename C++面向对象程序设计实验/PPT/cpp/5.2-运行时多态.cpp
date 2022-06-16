@@ -7,18 +7,17 @@ class A
 private:
 	char* name;
 public:
-	A() {};  //ÕâÀïÒª¹¹ÔìÒ»¸öÄ¬ÈÏµÄAµÄ¹¹Ôìº¯Êı£¬ÒòÎªºóÃæĞèÒª¹¹ÔìÒ»¸öAµÄÊı×é
+	A() {};  //è¿™é‡Œè¦æ„é€ ä¸€ä¸ªé»˜è®¤çš„Açš„æ„é€ å‡½æ•°ï¼Œå› ä¸ºåé¢éœ€è¦æ„é€ ä¸€ä¸ªAçš„æ•°ç»„
 	A(const char* str)
 	{
 		name = new char[strlen(str) + 1]{ '\0' };
 		strcpy(name, str);
 	}
-	void show()
+	virtual void show()
 	{
 		cout << name << endl;
 	}
-	virtual void print() = 0;  //ÕâÀï½«printº¯Êı¶¨ÒåÎª´¿Ğéº¯Êı£¬Ê¹µÃÅÉÉúÀàÖØĞ´µÄprintº¯ÊıÄÜ±»µ÷ÓÃ
-	virtual ~A()   //»ùÀàÎö¹¹º¯Êı¶¨ÒåÎªĞéº¯Êı£¬·ÀÖ¹ÔËĞĞÊ±¶àÌ¬·¢ÉúÄÚ´æĞ¹Â©
+	virtual ~A()   //åŸºç±»ææ„å‡½æ•°å®šä¹‰ä¸ºè™šå‡½æ•°ï¼Œé˜²æ­¢è¿è¡Œæ—¶å¤šæ€å‘ç”Ÿå†…å­˜æ³„æ¼
 	{
 		delete[]name;
 		cout << "destructor A" << endl;
@@ -30,15 +29,16 @@ class B :public A
 private:
 	int age;
 public:
-	B(const char* str,int a) :A(str) //²ÎÊı´«µİ
-	{
-		age = a;
-	};
+	B(const char* str, int a) :A(str), age(a) {};//å‚æ•°ä¼ é€’
 	void print()
 	{
-		cout << "B:";
-		A::show();    //ÕâÀïµ÷ÓÃAµÄshowº¯Êı
 		cout << age << endl;
+	}
+	void show()
+	{
+		cout << "B:";
+		A::show();    //è¿™é‡Œè°ƒç”¨Açš„showå‡½æ•°
+		print();
 	}
 };
 
@@ -47,34 +47,35 @@ class C:public A
 private:
 	char sex;
 public:
-	C(const char* str,char s) :A(str) 
-	{
-		sex = s;
-	};
+	C(const char* str, char s) :A(str), sex(s) {};
 	void print()
+	{
+		cout << sex << endl;
+	}
+	void show()
 	{
 		cout << "C:";
 		A::show();
-		cout << sex << endl;
+		print();
 	}
 };
 
 class manager
 {
-	A** array;   //Êı×éAÓÃÓÚ´æ·ÅA*ÀàĞÍµÄÊı¾İ³ÉÔ±£¬ÕâÑù²ÅÄÜÓÃ»ùÀàÖ¸ÕëÖ¸ÏòÅÉÉúÀà¶ÔÏó
+	A** array;   //æ•°ç»„Aç”¨äºå­˜æ”¾A*ç±»å‹çš„æ•°æ®æˆå‘˜ï¼Œè¿™æ ·æ‰èƒ½ç”¨åŸºç±»æŒ‡é’ˆæŒ‡å‘æ´¾ç”Ÿç±»å¯¹è±¡
 	int len;
 public:
 	manager(int n)
 	{
-		array = new A * [n] {NULL};  //¿ªÊ¼Ê±³õÊ¼»¯ÎªNULL
+		array = new A * [n] {NULL};  //å¼€å§‹æ—¶åˆå§‹åŒ–ä¸ºNULL
 		len = 0;
 	}
 	void add(int i, const char* str, int age)
 	{
-		array[i] = new B(str, age);   //¶¯Ì¬´´½¨Àà¶ÔÏó²¢³õÊ¼»¯µÄ·½·¨£¨ÓĞ²ÎÊı£©£»ÈôÎŞ²ÎÊıÔò»¹ĞèÒªĞ´Ò»¸öBµÄÄ¬ÈÏ¹¹Ôìº¯Êı
+		array[i] = new B(str, age);   //åŠ¨æ€åˆ›å»ºç±»å¯¹è±¡å¹¶åˆå§‹åŒ–çš„æ–¹æ³•ï¼ˆæœ‰å‚æ•°ï¼‰ï¼›è‹¥æ— å‚æ•°åˆ™è¿˜éœ€è¦å†™ä¸€ä¸ªBçš„é»˜è®¤æ„é€ å‡½æ•°
 		len++;
 	}
-	void add(int i, const char* str, char s) //¶Ôaddº¯ÊıÖØÔØ
+	void add(int i, const char* str, char s) //å¯¹addå‡½æ•°é‡è½½
 	{
 		array[i] = new C(str, s);
 		len++;
@@ -85,7 +86,7 @@ public:
 		{
 			if (array[i] != NULL)
 			{
-				delete array[i];  //Îö¹¹A*Ö¸ÏòµÄÅÉÉúÀàB»òC¶ÔÏó£¬Òò´ËAµÄÎö¹¹º¯ÊıĞèÒª¶¨Òå³ÉĞéº¯Êı
+				delete array[i];  //ææ„A*æŒ‡å‘çš„æ´¾ç”Ÿç±»Bæˆ–Cå¯¹è±¡ï¼Œå› æ­¤Açš„ææ„å‡½æ•°éœ€è¦å®šä¹‰æˆè™šå‡½æ•°
 				i++;
 			}
 			else
@@ -99,7 +100,7 @@ public:
 		{
 			if (array[i] != NULL)
 			{
-				array[i]->print();  //¶àÌ¬
+				array[i]->show();  //å¤šæ€
 				i++;
 			}
 			else
